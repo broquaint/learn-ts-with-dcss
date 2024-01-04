@@ -1,0 +1,31 @@
+* Project Learn More Things for Job Elgibility Engoodening
+  This effort is to improve my job application eligibility by learning
+  some modern new tech, creating something to point at and write about
+  it as I go so others may also learn.
+** General plan
+   Create something using TypeScript, React and some other new hot
+   backend tech. Stretch goal of applying k8s. Write about this at
+   each step of the way in a separate blog.
+*** Subject of work
+    Track wins from the [[http://crawl.develz.org/play.htm][Dungeon Crawl servers]] and display them in a browser.
+*** Scope of work
+    The core of the work focuses solely on picking out wins in the
+    "logs" of the official DCSS servers (but just 1 server to begin
+    with) and making that data accessible and displayable.
+    - A backend server to fetch the games and expose an API of recent
+      wins
+    - A key/value store for tracking the state of the backend server
+    - A static content server that serves an SPA which displays the
+      recent wins
+    - Blog + posts, nothing overly fancy, most of the work should be
+      thinking + writing not mucking about with blog software!
+    - _Stretch_: A backend server which posts wins to Mastodon
+      (account to be created on the [[https://botsin.space/][botsin.space]] server or other
+      relevant server).
+*** Tech stack
+    - Deno as the runtime with the code written in TypeScript
+    - React frontend of some kind, maybe just vanilla React?
+    - Not sure for key/value store ??? Maybe just [[https://docs.deno.com/kv/manual][KV]]?
+    - Blog in Hugo or Gatsby ... [[https://jamstack.org/generators/][too many damned options]]! Ok possibly
+      also [[https://github.com/jekyll/jekyll][jekyll]] (generate on my Mac) or [[https://cryogenweb.org/docs/getting-started.html][cryogenweb]] because it's also
+      clojure but not too fussed.
