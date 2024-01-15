@@ -1,8 +1,6 @@
 import { Application, Status } from "https://deno.land/x/oak@v12.6.1/mod.ts";
 
-type LogGame = { tmsg: string }
-
-function winsFromLogfile(logfileString: string) : LogGame[] {
+function winsFromLogfile(logfileString: string) {
   return logfileString.split(/\n/)
     .map(logline => {
       return logline.split(/\b:\b/).reduce((acc, s) => {
