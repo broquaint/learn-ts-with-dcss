@@ -1,12 +1,14 @@
 import { Application, Status } from "https://deno.land/x/oak@v12.6.1/mod.ts";
 
-function winsFromLogfile(logfileString: string) {
+type LogGame = { tmsg: string }
+
+function winsFromLogfile(logfileString: string) : LogGame[] {
   return logfileString.split(/\n/)
     .map(logline => {
       return logline.split(/\b:\b/).reduce((acc, s) => {
         const p = s.split(/\b=\b/);
         return {...acc, [p[0]]: p[1]};
-      }, {})
+      }, {tmsg: ''});
     })
     .filter(game => game.tmsg.startsWith('escaped with the Orb'))
     .slice(0, 3)
