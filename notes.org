@@ -29,3 +29,15 @@
     - Blog in Hugo or Gatsby ... [[https://jamstack.org/generators/][too many damned options]]! Ok possibly
       also [[https://github.com/jekyll/jekyll][jekyll]] (generate on my Mac) or [[https://cryogenweb.org/docs/getting-started.html][cryogenweb]] because it's also
       clojure but not too fussed.
+    - Maybe better implemented as an event–based system ... something
+      for another iteration.
+** Implementation
+   There will be a server for serving the logfile just like for real.
+   This may need to simulate the log file changing over time. Or
+   perhaps we simulate this in the fetcher.
+   The logfile fetcher grabs the tail of the logfile and finds any
+   recent wins. It remembers where it got to in the logfile for the
+   next request.
+   The use case is a scheduled call to the logfile fetcher endpoint
+   rather than random (in time) access.
+
