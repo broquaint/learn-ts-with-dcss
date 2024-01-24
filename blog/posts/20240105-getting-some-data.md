@@ -1,7 +1,14 @@
+---
+layout: post
+title:  "Just get some data"
+date:   2024-01-05 13:05:13 +0700
+categories: blog learning
+---
+
 # Recap
 
 This is part 2 in a series on learning things and writing about the
-experience. Today will, probably, cover TypeScript, Deno and their
+experience. Today will—probably—cover TypeScript, Deno and their
 attendant ecosystems.
 
 # Data from data place
@@ -14,13 +21,13 @@ ever, keep testing self–contained.
 
 Firstly it seems my naive approach to the Deno standard library,
 treating it like a fancy `node`, was flawed and there are in fact
-[sensible ways][] of reading files. Phew!
+[sensible ways][] of reading files. I sure do have pie on my face!
 
-```
+```typescript
 ctx.response.body = await Deno.readFile("./webzook-0.30.logfile");
 ```
 
-That's the crux of the test server for now.
+That's the crux of the test logfile server for now.
 
 Next we need to fetch that data ... and then keep track of it. The
 latter is where the complexity will _actually_ lie but it's mostly
@@ -30,7 +37,7 @@ those assumptions once things are running.
 Let's put that aside for just a moment and get the data fetching
 setup. This is pleasantly straightforward:
 
-```
+```typescript
 function winsFromLogfile(logfileString: string) : object {
   return { todo: 'actual data' };
 }
@@ -224,7 +231,7 @@ The easy part is now done, now for the more interesting part—following
 the logfile, a la [tail -f][], so we can extract _recent_ wins. What
 does it mean to "follow" the Resource of a Uniform **Resource**
 Locator? Much like `tail -f` we're interested in the end of that
-resource, specifcally we want the N most recent games. But given there
+resource, specifically we want the `N` most recent games. But given there
 isn't (yet) a way to make such a request we turn to our old friend
 "heuristics"!
 
@@ -237,7 +244,7 @@ Avg line length <strong>605.88</strong>, min <strong>440</strong>, max <strong>1
 </pre>
 
 So on a reasonable data set, the games played on the CAO server on
-version 0.29 of DCSS the average line length was **605.88** but the
+version 0.29 of DCSS, the average line length was **605.88** but the
 maximum was **1443**. As we're just building a tool for learning
 purposes I think finger in the air estimate of `1024` characters (aka bytes\*) per
 game should be fine. Now we can request the last 8 games by simply
@@ -305,7 +312,7 @@ It does require the extra hoop jump of getting the size of the logfile
 and lucky for us [oak][] supports `HEAD` requests out of the
 box.
 
-To keep apply some brevity to this post I've gone and
+To belatedly keep some brevity to this post I've gone and
 [implemented the tailing][] so I'll just call out the interesting
 parts then wrap up.
 
@@ -338,14 +345,24 @@ async function fetchLogLength(url: string) : Promise<number> {
 That's about it really! The only other fun new thing is the use of
 [Deno KV][] for keeping track of state. But because we're using it like
 the glorified SQLite DB it is under the hood (for local usage) it's
-not worth covering here, looking at the code is left as an exercise to
+not worth covering here, looking at [the code][] is left as an exercise to
 the reader.
+
+[done this before]: https://github.com/broquaint/net-http-follow_tail/blob/master/lib/net/http/follow_tail.rb#L69-L74
+[Range]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Range
+[bang-bang]: https://kotlinlang.org/docs/null-safety.html#the-operator
+[oak]: https://oakserver.github.io/oak/
+[implemented the tailing]: https://github.com/broquaint/learn-ts-with-dcss/commit/5ea25c6d1ce1126909bc1d3b6b2d1ab8c0c37b47#diff-1ba718c1eb8aa39cd20c2562d92523068c734d75f54655e97d652b992d9b4259R3
+[recoverable errors]: https://doc.rust-lang.org/std/result/index.html
+[Deno KV]: https://docs.deno.com/kv/manual
+[the code]: https://github.com/broquaint/learn-ts-with-dcss/blob/main/server.ts
+
 
 # Wrap up
 
-Now we have something that can follower the tail of a single DCSS
-logfile and produced any winning games, as JSON, that have been added
-to it. That's nice!
+Now we have something that can follow the tail of a single DCSS
+logfile over HTTP and produce any winning games, as JSON, that have
+been added to it. That's nice!
 
 ```
 § curl -s http://localhost:8000/ | jq '.[] | [.name,.char,.tmsg]'
@@ -366,14 +383,10 @@ to it. That's nice!
 ]
 ```
 
-And indeed won two games with a pair of Felid Summoners, once with
+And indeed `Tulse` won two games with a pair of [Felid][] [Summoners][], once with
 [Jivya][] and another with [Gozag][]!
 
-[done this before]: https://github.com/broquaint/net-http-follow_tail/blob/master/lib/net/http/follow_tail.rb#L69-L74
-[Range]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Range
-[bang-bang]: https://kotlinlang.org/docs/null-safety.html#the-operator
-[oak]: https://oakserver.github.io/oak/
-[implemented the tailing]: https://github.com/broquaint/learn-ts-with-dcss/commit/5ea25c6d1ce1126909bc1d3b6b2d1ab8c0c37b47#diff-1ba718c1eb8aa39cd20c2562d92523068c734d75f54655e97d652b992d9b4259R3
-[Deno KV]: https://docs.deno.com/kv/manual
+[Felid]: http://crawl.chaosforge.org/Felid
+[Summoners]: http://crawl.chaosforge.org/Summoner
 [Jivya]: http://crawl.akrasiac.org/rawdata/Tulse/morgue-Tulse-20231129-160240.txt
 [Gozag]: http://crawl.akrasiac.org/rawdata/Tulse/morgue-Tulse-20240111-122448.txt

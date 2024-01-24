@@ -1,3 +1,11 @@
+---
+layout: post
+title:  "Learning by making things"
+date:   2024-01-04 09:20:13 +0700
+author: Dan Brook
+categories: blog learning
+---
+
 # Intro
 
 When trying to learn something new often the hardest problem to solve
@@ -121,7 +129,7 @@ delays makes it seem less aggressive but only marginally. At any rate
 it's working nicely and I can easily build a map that shows what
 happened in the game.
 
-```
+```typescript
 const logline = `v=0.30-b1:vlong=0.30-b1-7-gcb88a99046:lv=0.1:vsavrv=Git::0.30-b1-7-gcb88a99046:vsav=34.253:tiles=1:name=FDmntl:race=Spriggan:cls=Brigand:char=SpBr:xl=2:sk=Stealth:sklev=6:title=Sneak:place=D::2:br=D:lvl=2:absdepth=2:hp=0:mhp=14:mmhp=14:mp=3:mmp=3:bmmp=3:str=7:int=12:dex=16:ac=3:ev=16:sh=0:start=20240003183332S:dur=1730:turn=898:aut=6576:kills=23:status=lethally poisoned (0 -> -13):gold=44:goldfound=44:goldspent=0:scrollsused=0:potionsused=0:sc=25:ktyp=pois:killer=a goblin:dam=3:sdam=3:tdam=3:end=20240004080729S:seed=5894012356088655548:tmsg=succumbed to a goblin's poison`;
 const pairs = logline.split(/\b:\b/);
 const result = pairs.reduce((acc: Object, s) => {
@@ -182,11 +190,12 @@ const result = pairs.reduce((acc: Object, s) => {
 
 Now we just pull out the field which shows the game ended in a
 win. That field is not technically present in fact. Luckily, as I say,
-I've been here before and [happen to know][] that if the `ending` field
+I've been here before and [happen to know][] that if the `tmsg` field
 begins `escaped with the Orb` then it's a winner (these days we
 have a handy [API doc][] too!). So know we can filter for winning
 games based on that info, so let's see how many winning games there
 have been for 0.30 on webzook.net.
+
 
 [module]: https://docs.deno.com/runtime/manual/basics/modules/
 [some experience]: https://github.com/broquaint/soup-stash/blob/master/script/keeping-up-with-the-logs
@@ -229,7 +238,6 @@ That's some nice data and means we have something useful to work with
 (no surprise there!). And here is a good point to call it a day and
 think back on what was learnt.
 
-
 [might have written]: https://deno.land/std@0.210.0/io/mod.ts?s=readLines#Examples
 [90s Java library author]: https://docs.oracle.com/javase/8/docs/api/
 [slurping all lines at once]: https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#readAllLines-java.nio.file.Path-
@@ -242,9 +250,10 @@ Today I learnt:
   little wanting
 - A little more about Code: how to create+open a workspace, run some
   TypeScript in situ, configuring some things
-- That the DCSS logfile data is pleasantly stable
+- That the DCSS logfile data is pleasantly stable (little to no change
+  in over 10 years!)
 - There are too many static site blogging options (and it's too boring
   to bother blogging about)
 
-That's a good start! Tomorrow I want to be pulling data from a server
+That's a good start! Next I want to be pulling data from a server
 directly and getting a feed of wins.
